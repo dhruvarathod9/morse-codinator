@@ -1,0 +1,65 @@
+< MC code html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Morse Code Messenger</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #111; color: #eee; }
+    nav { display: flex; background: #222; }
+    nav button { flex: 1; padding: 1em; border: none; background: #333; color: #eee; cursor: pointer; }
+    nav button.active { background: #555; font-weight: bold; }
+    section { display: none; padding: 1em; }
+    section.active { display: block; }
+    textarea, input[type=text] { width: 100%; padding: 0.5em; margin: 0.5em 0; border-radius: 5px; border: none; }
+    button.action { margin: 0.25em; padding: 0.5em 1em; border: none; border-radius: 6px; cursor: pointer; background: #0a84ff; color: white; }
+    #video { width: 100%; background: black; }
+    .meter { height: 10px; background: #333; margin: 0.5em 0; }
+    .fill { height: 10px; background: lime; width: 0%; }
+    .log { background: #000; padding: 0.5em; height: 120px; overflow-y: auto; font-size: 0.8em; }
+    #overlay { position: fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); color:#fff; display:none; padding:2em; overflow-y:scroll; }
+    #overlay button { background:#0a84ff; border:none; padding:0.5em 1em; margin-top:1em; }
+  </style>
+</head>
+<body>
+  <nav>
+    <button data-tab="send" class="active">Send</button>
+    <button data-tab="receive">Receive</button>
+    <button data-tab="debug">Debug</button>
+    <button data-tab="guide">Guide</button>
+  </nav>
+
+  <!-- Send Mode -->
+  <section id="send" class="active">
+    <h2>Send Mode</h2>
+    <input type="text" id="sendText" placeholder="Enter text to send"/>
+    <button class="action" onclick="playMorse('beep')">Send as Beeps</button>
+    <button class="action" onclick="playMorse('torch')">Send as Torch</button>
+    <button class="action" onclick="playMorse('vibration')">Send as Vibration</button>
+    <button class="action" onclick="stopMorse()">Stop</button>
+  </section>
+
+  <!-- Receive Mode -->
+  <section id="receive">
+    <h2>Receive Mode</h2>
+    <button class="action" onclick="startCamera()">Receive via Camera</button>
+    <button class="action" onclick="startMic()">Receive via Microphone</button>
+    <button class="action" onclick="simulateVibrationInput()">Simulate Vibration Input</button>
+    <div id="received"></div>
+  </section>
+
+  <!-- Debug Mode -->
+  <section id="debug">
+    <h2>Debug Tools</h2>
+    <video id="video" autoplay playsinline></video>
+    <div class="meter"><div id="lightMeter" class="fill"></div></div>
+    <canvas id="audioCanvas" width="300" height="60"></canvas>
+    <div class="log" id="log"></div>
+  </section>
+
+  <!-- Guide Mode -->
+  <section id="guide">
+    <h2>Dual-Device Test Guide</h2>
+    <ol>
+      <li>Open this page on <b>iPhone Safari</b> → Go to <b>Send</b> → play Morse via Torch or Beep.</li>
+      <li>Open this page on <b>Mac Safari</b> → Go to <b>Receive</b> → pick Ca
